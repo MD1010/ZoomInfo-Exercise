@@ -6,11 +6,13 @@ import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { environment } from "../environments/environment";
 import { AppComponent } from "./app.component";
 import { metaReducers } from "./store/app-store";
+import { TriviaModule } from "./modules/trivia/trivia.module";
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserAnimationsModule,
+    TriviaModule,
     StoreModule.forRoot({} as any, { metaReducers }),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),

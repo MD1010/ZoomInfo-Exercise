@@ -1,1 +1,1 @@
-export { reducer as questionReducer, QuestionsState } from "./question.reducer";
+export { TriviaState, reducer as triviaReducer } from "./trivia.reducer";

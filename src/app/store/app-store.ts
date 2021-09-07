@@ -1,13 +1,13 @@
 import { ActionReducerMap, createFeatureSelector, MetaReducer } from "@ngrx/store";
 import { environment } from "src/environments/environment";
-import { QuestionsState, questionReducer } from "./reducers";
+import { triviaReducer, TriviaState } from "./reducers";
 
 export interface AppState {
-  questions: QuestionsState;
+  trivia: TriviaState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
-  questions: questionReducer,
+  trivia: triviaReducer,
 };
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ? [] : [];
