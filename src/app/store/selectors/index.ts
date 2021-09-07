@@ -1,1 +1,1 @@
-export * from './user-table.selector';
+export * from "./question.selector";

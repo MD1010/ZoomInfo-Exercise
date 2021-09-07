@@ -1,3 +1,3 @@
-import { from } from 'core-js/fn/array';
+import { from } from "core-js/fn/array";
 
-export * from './users-table.action';
+export * from "./question.actions";

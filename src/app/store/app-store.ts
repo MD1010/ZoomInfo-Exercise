@@ -1,15 +1,15 @@
-import { ActionReducerMap, createFeatureSelector, MetaReducer } from '@ngrx/store';
-import { environment } from 'src/environments/environment';
-import { usersTableReducer, UsersTableState } from './reducers/user-table.reducer';
+import { ActionReducerMap, createFeatureSelector, MetaReducer } from "@ngrx/store";
+import { environment } from "src/environments/environment";
+import { QuestionsState, questionReducer } from "./reducers";
 
 export interface AppState {
-  usersTable: UsersTableState;
+  questions: QuestionsState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
-  usersTable: usersTableReducer,
+  questions: questionReducer,
 };
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ? [] : [];
 
-export const getUsersState = createFeatureSelector<AppState>('users');
+export const getQuestionsState = createFeatureSelector<AppState>("questions");

@@ -1,1 +1,1 @@
-export * from '../reducers/user-table.reducer';
+export { reducer as questionReducer, QuestionsState } from "./question.reducer";
