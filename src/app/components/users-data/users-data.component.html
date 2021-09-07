@@ -1,0 +1,9 @@
+<app-table
+  [dataByPage]="usersByPage$ | async"
+  [isLoading]="isLoading$ | async"
+  [fetchError]="fetchError$ | async"
+  [dataLength]="(users$ | async)?.length"
+  (pageSwitched)="getPage($event)"
+  [columnsBoundValues]="['id','age','name']"
+  [columnDisplayNames]="['Id','Age','Name']"
+></app-table>
