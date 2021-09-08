@@ -1,6 +1,6 @@
 <div class="question-container">
   <div class="question-container__title">
-    Q:{{index}} {{question.content}}
+    Q:{{question.number}} {{question.content}}
   </div>
   <app-timer [timerSeconds]="10" (timeExpired)="timeExpired()"></app-timer>
   <div *ngFor="let answer of this.question.answers" class="question-container__answers">

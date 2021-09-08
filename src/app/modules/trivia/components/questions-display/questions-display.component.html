@@ -1,4 +1,4 @@
 <p>questions-display works!</p>
-<ng-container *ngIf="this.currentQuestion$ | async as question">
+<ng-container *ngIf="this.currentQuestion$ | async as question ">
   <app-question [question]="question" (questionTimeExpired)="switchQuestion()"></app-question>
 </ng-container>

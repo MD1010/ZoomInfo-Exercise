@@ -4,6 +4,7 @@ import { TriviaState } from "../reducers";
 
 const triviaStateSelector = createFeatureSelector<AppState, TriviaState>("trivia");
 export const getCurrentQuestion = createSelector(triviaStateSelector, (state: TriviaState) => state.currentQuestion);
+export const getQuestionNumber = createSelector(triviaStateSelector, (state: TriviaState) => state.ids.length);
 // import { AppState, getUsersState } from "../app-store";
 // import { UsersTableState } from "../reducers/question.reducer";
 // import { usersAdapter } from "../reducers/question.reducer";

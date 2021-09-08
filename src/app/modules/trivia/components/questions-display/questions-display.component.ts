@@ -3,7 +3,7 @@ import { Store } from "@ngrx/store";
 import { tap } from "rxjs/operators";
 import { AppState } from "src/app/store/app-state";
 import { TriviaState } from "src/app/store/reducers";
-import { getCurrentQuestion } from "src/app/store/selectors/trivia.selector";
+import { getCurrentQuestion, getQuestionNumber } from "src/app/store/selectors/trivia.selector";
 import { TriviaService } from "../../services/trivia.service";
 import * as TriviaActions from "src/app/store/actions/index";
 import { Observable } from "rxjs";
