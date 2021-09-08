@@ -6,6 +6,8 @@ import { TriviaState } from "src/app/store/reducers";
 import { getCurrentQuestion } from "src/app/store/selectors/trivia.selector";
 import { TriviaService } from "../../services/trivia.service";
 import * as TriviaActions from "src/app/store/actions/index";
+import { Observable } from "rxjs";
+import { Question } from "../../models/question.model";
 
 @Component({
   selector: "app-questions-display",
@@ -16,11 +18,13 @@ import * as TriviaActions from "src/app/store/actions/index";
 export class QuestionsDisplayComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
+  currentQuestion$: Observable<Question | null>;
+
   ngOnInit(): void {
-    const damog = this.store.select(getCurrentQuestion);
-    damog.subscribe((q) => console.log("new quetion set", q));
+    this.currentQuestion$ = this.store.select(getCurrentQuestion);
   }
-  getNext() {
+
+  switchQuestion() {
     this.store.dispatch(TriviaActions.loadNextQuestion());
   }
 }

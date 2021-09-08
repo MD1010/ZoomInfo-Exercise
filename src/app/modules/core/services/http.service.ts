@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { timeout } from "rxjs/operators";
+import { share, timeout } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root",
@@ -12,11 +12,11 @@ export class HttpService {
   get<T>(url: string, params?: HttpParams, headers?: HttpHeaders): Observable<T> {
     return this.http
       .get<T>(url, { headers, params })
-      .pipe(timeout(3000));
+      .pipe(timeout(3000), share());
   }
   post<T>(url: string, body: any, params?: HttpParams, headers?: HttpHeaders): Observable<T> {
     return this.http
       .post<T>(url, body, { headers, params })
-      .pipe(timeout(3000));
+      .pipe(timeout(3000), share());
   }
 }

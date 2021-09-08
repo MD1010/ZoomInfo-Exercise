@@ -22,12 +22,14 @@ const initialState: TriviaState = adapter.getInitialState({
 const triviaReducer = createReducer(
   initialState,
   on(TriviaActions.questionFetchSuccess, (state, { question }) => {
-    console.log("success reducer!!");
     return adapter.addOne(question, { ...state, currentQuestion: question });
   }),
   on(TriviaActions.questionFetchFail, (state, { error }) => {
     return { ...state, error };
   }),
+  // on(TriviaActions.resetTimer, (state) => {
+  //   return adapter.addOne(question, { ...state, currentQuestion: question });
+  // }),
   on(TriviaActions.submitWrongAnswer, (state, { question }) => {
     return {
       ...state,

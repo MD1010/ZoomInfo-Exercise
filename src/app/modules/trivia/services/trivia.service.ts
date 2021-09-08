@@ -15,20 +15,22 @@ export class TriviaService {
   constructor(private http: HttpService) {}
 
   private _normalizeQuestion(apiQuestion: any): Question {
-    const incorrectAnswers = apiQuestion.incorrect_answers.map((a: any) => ({ content: a, isCorrect: false }));
-    const correctAnswer = { content: apiQuestion.correct_answer, isCorrect: true };
+    const incorrectAnswers = apiQuestion.incorrect_answers.map((a: any) => ({ content: atob(a), isCorrect: false }));
+    const correctAnswer = { content: atob(apiQuestion.correct_answer), isCorrect: true };
     return {
       answers: [...incorrectAnswers, correctAnswer],
-      content: apiQuestion.question,
+      content: atob(apiQuestion.question),
       id: uuidv4(),
     };
   }
   fetchNextQuestion(): Observable<Question> {
-    return this.http.get(environment.apiEndpoint, new HttpParams({ fromObject: { amount: 1, type: "multiple" } })).pipe(
-      map((res: any) => {
-        const [question] = res.results;
-        return this._normalizeQuestion(question);
-      })
-    );
+    return this.http
+      .get(environment.apiEndpoint, new HttpParams({ fromObject: { amount: 1, type: "multiple", encode: "base64" } }))
+      .pipe(
+        map((res: any) => {
+          const [question] = res.results;
+          return this._normalizeQuestion(question);
+        })
+      );
   }
 }
