@@ -1,6 +1,5 @@
 export interface Question {
   id: string;
   content: string;
-  answers: string[];
-  correctAnswer: string;
+  answers: { content: string; isCorrect: boolean }[];
 }

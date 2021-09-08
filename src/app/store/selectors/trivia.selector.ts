@@ -1,4 +1,9 @@
-// import { createSelector } from "@ngrx/store";
+import { createSelector, createFeatureSelector } from "@ngrx/store";
+import { AppState } from "../app-store";
+import { TriviaState } from "../reducers";
+
+const triviaStateSelector = createFeatureSelector<AppState, TriviaState>("trivia");
+export const getCurrentQuestion = createSelector(triviaStateSelector, (state: TriviaState) => state.currentQuestion);
 // import { AppState, getUsersState } from "../app-store";
 // import { UsersTableState } from "../reducers/question.reducer";
 // import { usersAdapter } from "../reducers/question.reducer";

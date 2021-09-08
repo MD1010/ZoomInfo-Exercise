@@ -1,5 +1,5 @@
-import { UsersTableEffects } from './users-table.effect';
+import { TriviaEffects } from "./trivia.effect";
 
-export const effects: any[] = [UsersTableEffects];
+export const effects: any[] = [TriviaEffects];
 
-export * from './users-table.effect';
+export * from "./trivia.effect";

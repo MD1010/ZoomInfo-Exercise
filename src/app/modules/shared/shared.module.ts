@@ -1,9 +1,8 @@
-import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { UIModule } from "src/app/modules/ui.module";
+import { TimerComponent } from "./components/timer/timer.component";
 @NgModule({
-  imports: [UIModule, CommonModule],
-  declarations: [],
-  exports: [],
+  imports: [],
+  declarations: [TimerComponent],
+  exports: [TimerComponent],
 })
 export class SharedModule {}

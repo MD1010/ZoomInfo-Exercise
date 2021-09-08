@@ -5,8 +5,9 @@ import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { environment } from "../environments/environment";
 import { AppComponent } from "./app.component";
-import { metaReducers } from "./store/app-store";
+import { metaReducers, reducers } from "./store/app-store";
 import { TriviaModule } from "./modules/trivia/trivia.module";
+import { CoreModule } from "./modules/core/core.module";
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,8 +16,13 @@ import { TriviaModule } from "./modules/trivia/trivia.module";
     TriviaModule,
     StoreModule.forRoot({} as any, { metaReducers }),
     EffectsModule.forRoot([]),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    StoreModule.forRoot({}, {}),
+    // Instrumentation must be imported after importing StoreModule (config is optional)
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production, // Restrict extension to log-only mode
+      autoPause: true, // Pauses recording actions and state changes when the extension window is not open
+    }),
+    CoreModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

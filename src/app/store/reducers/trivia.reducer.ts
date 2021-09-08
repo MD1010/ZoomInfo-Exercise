@@ -16,14 +16,18 @@ const initialState: TriviaState = adapter.getInitialState({
   wrongAnswers: [],
   entities: [],
   currentQuestion: null,
-  currentlyDisplayedQuestion: null,
   lastQuestionRetriesLeft: NUM_OF_RETRIES,
   error: null,
 });
 const triviaReducer = createReducer(
   initialState,
-  on(TriviaActions.setNextQuestion, (state, { question }) => {
+  on(TriviaActions.questionFetchSuccess, (state, { question }) => {
+    console.log("success reducer!!");
+
     return { ...state, currentQuestion: question };
+  }),
+  on(TriviaActions.questionFetchFail, (state, { error }) => {
+    return { ...state, error };
   }),
   on(TriviaActions.submitWrongAnswer, (state, { question }) => {
     return {
