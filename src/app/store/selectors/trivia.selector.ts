@@ -1,5 +1,5 @@
 import { createSelector, createFeatureSelector } from "@ngrx/store";
-import { AppState } from "../app-store";
+import { AppState } from "../app-state";
 import { TriviaState } from "../reducers";
 
 const triviaStateSelector = createFeatureSelector<AppState, TriviaState>("trivia");

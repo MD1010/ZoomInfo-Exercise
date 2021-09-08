@@ -3,11 +3,11 @@ import { CommonModule } from "@angular/common";
 import { SharedModule } from "../shared/shared.module";
 import { HttpClientModule } from "@angular/common/http";
 import { StoreModule } from "@ngrx/store";
-import { reducers } from "src/app/store/app-store";
 import { QuestionComponent } from "./components/question/question.component";
 import { QuestionsDisplayComponent } from "./components/questions-display/questions-display.component";
 import { effects } from "src/app/store/effects";
 import { EffectsModule } from "@ngrx/effects";
+import * as fromTrivia from "src/app/store/reducers";
 
 @NgModule({
   declarations: [QuestionComponent, QuestionsDisplayComponent],
@@ -16,7 +16,7 @@ import { EffectsModule } from "@ngrx/effects";
     SharedModule,
     CommonModule,
     HttpClientModule,
-    StoreModule.forFeature("trivia", reducers),
+    StoreModule.forFeature("trivia", fromTrivia.reducer),
     EffectsModule.forFeature(effects),
   ],
 })

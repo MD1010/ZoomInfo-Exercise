@@ -5,7 +5,7 @@ import { of } from "rxjs";
 import { catchError, map, mergeMap } from "rxjs/operators";
 import { TriviaService } from "src/app/modules/trivia/services/trivia.service";
 import * as TriviaActions from "../actions/trivia.actions";
-import { AppState } from "../app-store";
+import { AppState } from "../app-state";
 
 @Injectable()
 export class TriviaEffects {

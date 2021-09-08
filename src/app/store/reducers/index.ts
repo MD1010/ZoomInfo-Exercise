@@ -1,1 +1,1 @@
-export { TriviaState, reducer as triviaReducer } from "./trivia.reducer";
+export * from "./trivia.reducer";

@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { tap } from "rxjs/operators";
-import { AppState } from "src/app/store/app-store";
+import { AppState } from "src/app/store/app-state";
 import { TriviaState } from "src/app/store/reducers";
 import { getCurrentQuestion } from "src/app/store/selectors/trivia.selector";
 import { TriviaService } from "../../services/trivia.service";
