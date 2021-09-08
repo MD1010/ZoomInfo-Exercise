@@ -1,10 +1,14 @@
 import { createSelector, createFeatureSelector } from "@ngrx/store";
+import { Question } from "src/app/modules/trivia/models/question.model";
 import { AppState } from "../app-state";
 import { TriviaState } from "../reducers";
 
 const triviaStateSelector = createFeatureSelector<AppState, TriviaState>("trivia");
-export const getCurrentQuestion = createSelector(triviaStateSelector, (state: TriviaState) => state.currentQuestion);
-export const getQuestionNumber = createSelector(triviaStateSelector, (state: TriviaState) => state.ids.length);
+// export const getCurrentQuestion = createSelector(triviaStateSelector, (state: TriviaState) => state.currentQuestion);
+export const getAllQuestions = createSelector(
+  triviaStateSelector,
+  (state: TriviaState) => Object.values(state.entities) as Question[]
+);
 // import { AppState, getUsersState } from "../app-store";
 // import { UsersTableState } from "../reducers/question.reducer";
 // import { usersAdapter } from "../reducers/question.reducer";

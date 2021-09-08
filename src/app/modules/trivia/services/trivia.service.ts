@@ -14,7 +14,7 @@ import { Store } from "@ngrx/store";
   providedIn: "root",
 })
 export class TriviaService {
-  constructor(private http: HttpService, private store$: Store<AppState>) {}
+  constructor(private http: HttpService) {}
 
   private _normalizeQuestion(apiQuestion: any): Question {
     const incorrectAnswers = apiQuestion.incorrect_answers.map((a: any) => ({ content: atob(a), isCorrect: false }));

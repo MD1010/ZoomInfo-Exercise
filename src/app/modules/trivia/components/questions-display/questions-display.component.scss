@@ -1,0 +1,8 @@
+::ng-deep .p-carousel-indicators {
+  pointer-events: none;
+}
+
+::ng-deep .p-carousel-next,
+::ng-deep .p-carousel-prev {
+  display: none !important;
+}

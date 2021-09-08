@@ -1,7 +1,8 @@
 import { NgModule } from "@angular/core";
+import { CarouselModule } from "primeng/carousel";
 
 @NgModule({
   declarations: [],
-  exports: [],
+  exports: [CarouselModule],
 })
 export class UIModule {}

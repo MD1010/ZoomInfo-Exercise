@@ -13,11 +13,6 @@ export class QuestionComponent implements OnInit {
 
   @Input() question: Question;
   @Input() index: number;
-  @Output() questionTimeExpired = new EventEmitter<string>();
 
   ngOnInit(): void {}
-  timeExpired() {
-    // this.isTimeExpired = true;
-    this.questionTimeExpired.emit(this.question.id);
-  }
 }
