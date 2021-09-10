@@ -8,3 +8,7 @@ export const getAllQuestions = createSelector(
   triviaStateSelector,
   (state: TriviaState) => Object.values(state.entities) as IQuestion[]
 );
+export const getFetchedQuestionsCount = createSelector(
+  triviaStateSelector,
+  (state: TriviaState) => Object.values(state.entities).length
+);

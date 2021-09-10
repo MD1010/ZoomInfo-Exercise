@@ -21,7 +21,6 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
   constructor(private store: Store<AppState>) {}
 
   questions$: Observable<IQuestion[] | null>;
-  questionCount = 0;
   selectedAnswer: IAnswer | null = null;
   currentQuestionTries = NUM_OF_RETRIES;
   submitedQuestion: IQuestion | null = null;
@@ -31,9 +30,8 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
   questionTime = TIME_PER_QUESTION;
 
   ngOnInit(): void {
-    this.questions$ = this.store
-      .select(getAllQuestions)
-      .pipe(tap((questions) => (this.questionCount = questions.length)));
+    this.questions$ = this.store.select(getAllQuestions);
+    // this.getNextQuestion();
   }
 
   ngAfterViewInit(): void {
@@ -47,6 +45,8 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
   onQuestionDisplayed() {
     this.selectedAnswer = null;
     this.currentQuestionTries = NUM_OF_RETRIES;
+    console.log(123123);
+
     this.getNextQuestion();
   }
   updateSelection(answer: IAnswer | null) {
@@ -66,12 +66,10 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
   }
 
   getNextQuestion() {
-    if (this.questionCount !== MAX_QUESTIONS_DISPLAYED) {
-      this.store.dispatch(TriviaActions.loadNextQuestion());
-    }
+    this.store.dispatch(TriviaActions.loadNextQuestion());
   }
   submitAnswer(question: IQuestion) {
-    this.submitedQuestion = question;
+    this.submitedQuestion = question; // todo get from store
 
     const answer = this.selectedAnswer;
     if (!answer) {
