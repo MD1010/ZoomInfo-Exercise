@@ -7,6 +7,3 @@ export const questionFetchSuccess = createAction(
   props<{ question: IQuestion }>()
 );
 export const questionFetchFail = createAction("[Trivia] Load Next Question Failed", props<{ error: string }>());
-export const timeExpired = createAction("[Trivia] Question time expired");
-// mark question as wrong after max retries expired
-export const submitWrongAnswer = createAction("[Trivia] Question answer submitted", props<{ question: IQuestion }>());
