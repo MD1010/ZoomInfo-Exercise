@@ -5,7 +5,7 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import { HttpService } from "../../core/services/http.service";
-import { Question } from "../models/question.model";
+import { IQuestion } from "../interfaces/question.interface";
 import { v4 as uuidv4 } from "uuid";
 import { AppState } from "src/app/store/app-state";
 import { Store } from "@ngrx/store";
@@ -16,7 +16,7 @@ import { Store } from "@ngrx/store";
 export class TriviaService {
   constructor(private http: HttpService) {}
 
-  private _normalizeQuestion(apiQuestion: any): Question {
+  private _normalizeQuestion(apiQuestion: any): IQuestion {
     const incorrectAnswers = apiQuestion.incorrect_answers.map((a: any) => ({ content: atob(a), isCorrect: false }));
     const correctAnswer = { content: atob(apiQuestion.correct_answer), isCorrect: true };
     return {
@@ -26,7 +26,7 @@ export class TriviaService {
       number: +uniqueId(),
     };
   }
-  fetchNextQuestion(): Observable<Question> {
+  fetchNextQuestion(): Observable<IQuestion> {
     return this.http
       .get(environment.apiEndpoint, new HttpParams({ fromObject: { amount: 1, type: "multiple", encode: "base64" } }))
       .pipe(

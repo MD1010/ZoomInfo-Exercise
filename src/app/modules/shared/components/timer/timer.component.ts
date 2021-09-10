@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { EMPTY, Observable, timer } from "rxjs";
-import { finalize, scan, startWith, switchMap, takeUntil, takeWhile, tap } from "rxjs/operators";
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
+import { EMPTY, Observable, of, race, Subject, timer } from "rxjs";
+import { finalize, repeat, repeatWhen, scan, startWith, switchMap, takeUntil, takeWhile, tap } from "rxjs/operators";
 
 @Component({
   selector: "app-timer",
@@ -11,25 +11,28 @@ export class TimerComponent implements OnInit {
   constructor() {}
 
   @Output() timeExpired = new EventEmitter();
-  @Output() onStart = new EventEmitter();
+  // @Output() timerStarted = new EventEmitter();
   @Input() timerSeconds: number;
   timer$: Observable<number> = new Observable<number>();
   @Input() shouldStop: boolean;
   countdown$: Observable<number> = new Observable<number>();
+  restartTimer$: Subject<void> = new Subject<void>();
 
   ngOnInit(): void {
     this.timer$ = timer(1000, 1000).pipe(
       startWith(this.timerSeconds),
-
       scan((acc) => --acc, this.timerSeconds + 1),
-      finalize(() => this.timeExpired.emit()),
+      // this is called when the timer is restarted
+
+      finalize(() => {
+        console.log("!@#!@#!@#!@#");
+        this.timeExpired.emit();
+      }),
       takeWhile((x) => x >= 0)
     );
-    this.countdown$ = this.timeExpired.pipe(
+    this.countdown$ = race(this.timeExpired, this.restartTimer$).pipe(
       startWith(EMPTY),
-      tap(() => this.onStart.emit()),
       takeWhile(() => !this.shouldStop),
-      // tap(() => this.onStart.emit()),
       switchMap(() => this.timer$)
     );
   }

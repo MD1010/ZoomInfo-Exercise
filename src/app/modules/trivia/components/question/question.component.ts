@@ -1,6 +1,16 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  HostListener,
+} from "@angular/core";
 import { Observable } from "rxjs";
-import { Question } from "../../models/question.model";
+import { IAnswer } from "../../interfaces/answer.interface";
+import { IQuestion } from "../../interfaces/question.interface";
 
 @Component({
   selector: "app-question",
@@ -11,8 +21,17 @@ import { Question } from "../../models/question.model";
 export class QuestionComponent implements OnInit {
   constructor() {}
 
-  @Input() question: Question;
+  @Input() question: IQuestion;
   @Input() index: number;
-
+  @Output() answerSelected = new EventEmitter<IAnswer | null>();
   ngOnInit(): void {}
+
+  onSelect(answer: IAnswer) {
+    this.answerSelected.emit(answer);
+  }
+
+  // @HostListener("document:click", ["$event"])
+  // resetSelection() {
+  //   this.answerSelected.emit(null);
+  // }
 }

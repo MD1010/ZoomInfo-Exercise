@@ -1,17 +1,17 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from "@ngrx/entity";
 import { Action, createReducer, on } from "@ngrx/store";
-import { Question } from "src/app/modules/trivia/models/question.model";
+import { IQuestion } from "src/app/modules/trivia/interfaces/question.interface";
 import { NUM_OF_RETRIES } from "src/app/utils/consts";
 import * as TriviaActions from "../actions/trivia.actions";
 
-export interface TriviaState extends EntityState<Question> {
-  wrongAnswers: Question[];
-  currentQuestion: Question | null;
+export interface TriviaState extends EntityState<IQuestion> {
+  wrongAnswers: IQuestion[];
+  currentQuestion: IQuestion | null;
   lastQuestionRetriesLeft: number;
   error: string | null;
 }
 
-export const adapter: EntityAdapter<Question> = createEntityAdapter<Question>();
+export const adapter: EntityAdapter<IQuestion> = createEntityAdapter<IQuestion>();
 const initialState: TriviaState = adapter.getInitialState({
   wrongAnswers: [],
   entities: [],

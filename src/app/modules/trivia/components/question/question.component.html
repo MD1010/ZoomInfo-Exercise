@@ -4,6 +4,6 @@
   </div>
 
   <div *ngFor="let answer of this.question.answers" class="question-container__answers">
-    <button>{{answer.content}}</button>
+    <button class="question-container__answer-btn" (click)="onSelect(answer)">{{answer.content}}</button>
   </div>
 </div>

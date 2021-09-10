@@ -1,0 +1,5 @@
+.question-container {
+  &__answer-btn:focus {
+    border: 1px solid blue;
+  }
+}
