@@ -1,8 +1,10 @@
-<!-- <ng-container *ngIf="this.currentQuestion$ | async as question ">
-  <app-question [question]="question" (questionTimeExpired)="timeExpired()"></app-question>
-</ng-container> -->
 <ng-container *ngIf="this.questions$ | async as questions">
-  <app-timer [timerSeconds]="5" (timeExpired)="timeExpired()" (onStart)="onQuestionDisplayed()"></app-timer>
+  <app-timer
+    [timerSeconds]="5"
+    (timeExpired)="timeExpired()"
+    (onStart)="onQuestionDisplayed()"
+    [shouldStop]="isGameOver"
+  ></app-timer>
   <p-carousel #carousel [value]="questions" [numVisible]="1" [numScroll]="1" [circular]="false">
     <ng-template let-quesiton pTemplate="item">
       <app-question [question]="quesiton"></app-question>

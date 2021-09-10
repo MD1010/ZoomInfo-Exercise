@@ -20,7 +20,8 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
 
   // currentQuestion$: Observable<Question | null>;
   questions$: Observable<Question[] | null>;
-  questionCount: number = 0;
+  questionCount = 0;
+  isGameOver = false;
   @ViewChild("carousel") carousel: Carousel;
 
   ngOnInit(): void {
@@ -38,7 +39,11 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
     // fetch the next question
     // this.store.dispatch(TriviaActions.loadNextQuestion());
     console.log("started!");
-    if (this.questionCount < MAX_QUESTIONS_DISPLAYED) this.store.dispatch(TriviaActions.loadNextQuestion());
+    if (this.questionCount < MAX_QUESTIONS_DISPLAYED) {
+      this.store.dispatch(TriviaActions.loadNextQuestion());
+    } else {
+      this.isGameOver = true;
+    }
     // this.questions$
     //   .pipe(
     //     share(),
