@@ -48,7 +48,7 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
   onQuestionDisplayed() {
     this.selectedAnswer = null;
     this.currentQuestionTries = NUM_OF_RETRIES;
-    // this.timer.restartTimer$.next();
+
     this.getNextQuestion();
   }
   updateSelection(answer: IAnswer | null) {
@@ -78,13 +78,14 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
     }
     if (answer.isCorrect) {
       alert("You are right");
-      this.timer.restartTimer$.next();
+
       this.moveToNextQuestion();
     } else if (this.currentQuestionTries - 1) {
       this.currentQuestionTries -= 1;
       alert("Please Try again");
     } else {
       alert("Maybe next time :(");
+      this.moveToNextQuestion();
     }
   }
   moveToNextQuestion() {
@@ -99,6 +100,7 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
     console.log("moving to next question");
 
     if (!this.checkIfGameOver()) {
+      this.timer.timerControl$.next();
       this.carousel.navForward(null);
     }
   }

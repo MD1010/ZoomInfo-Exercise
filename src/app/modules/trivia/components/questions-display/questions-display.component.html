@@ -1,5 +1,5 @@
 <ng-container *ngIf="this.questions$ | async as questions">
-  <app-timer #timer [timerSeconds]="20" (timeExpired)="moveToNextQuestion()" [shouldStop]="isGameOver"></app-timer>
+  <app-timer #timer [timerSeconds]="5" (timeExpired)="moveToNextQuestion()"></app-timer>
   <p-carousel #carousel [value]="questions" [numVisible]="1" [numScroll]="1" [circular]="false">
     <ng-template let-question pTemplate="item">
       <app-question [question]="question" (answerSelected)="updateSelection($event)"></app-question>

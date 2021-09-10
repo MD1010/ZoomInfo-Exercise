@@ -1,5 +1,3 @@
-<ng-container *ngIf="countdown$ | async  as countdown">
-  <span>Time: {{countdown | time}} </span>
-</ng-container>
+<span>Time: {{ timer$ | async | time}}</span>
 
 <!-- <button (click)="restart()"></button> -->
