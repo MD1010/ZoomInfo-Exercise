@@ -20,7 +20,6 @@ import { IQuestion } from "../../interfaces/question.interface";
 export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
   constructor(private store: Store<AppState>) {}
 
-  // currentQuestion$: Observable<Question | null>;
   questions$: Observable<IQuestion[] | null>;
   questionCount = 0;
   selectedAnswer: IAnswer | null = null;
@@ -32,7 +31,6 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
   questionTime = TIME_PER_QUESTION;
 
   ngOnInit(): void {
-    // this.currentQuestion$ = this.store.select(getCurrentQuestion);
     this.questions$ = this.store
       .select(getAllQuestions)
       .pipe(tap((questions) => (this.questionCount = questions.length)));
@@ -49,10 +47,11 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
   onQuestionDisplayed() {
     this.selectedAnswer = null;
     this.currentQuestionTries = NUM_OF_RETRIES;
-
     this.getNextQuestion();
   }
   updateSelection(answer: IAnswer | null) {
+    console.log(answer);
+
     this.selectedAnswer = answer;
   }
 
@@ -60,6 +59,7 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
     if (this.submitedQuestion?.number === MAX_QUESTIONS_DISPLAYED) {
       alert(`Quiz done, You have got ${this.correctAnswers}/${MAX_QUESTIONS_DISPLAYED} correct answers!`);
       this.timer.stopTimer$.next();
+      window.close();
       return true;
     }
     return false;
@@ -78,6 +78,7 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
       return;
     }
     if (answer.isCorrect) {
+      this.colorLastQuestionIndicator(true);
       alert("You are right");
       this.correctAnswers += 1;
       this.moveToNextQuestion();
@@ -85,23 +86,24 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
       this.currentQuestionTries -= 1;
       alert("Please Try again");
     } else {
-      alert("Maybe next time :(");
+      const correctAnswer = this.submitedQuestion.answers.find((ans) => !!ans.isCorrect)?.content;
+      alert(`Maybe next time :( the correct answer is ${correctAnswer}`);
+      this.colorLastQuestionIndicator(false);
       this.moveToNextQuestion();
     }
   }
   moveToNextQuestion() {
-    // todo many questions are fetched as the number of timers each question has
-    // this.store.dispatch(TriviaActions.loadNextQuestion());
-    // todo check if last question display popup
-    // todo handle timer ticking after game is done
-    // if (!this.selectedAnswer) {
-    //   alert("You ran out of time");
-    // }
-    // console.log("moving to next question");
-
     if (!this.checkIfGameOver()) {
       this.timer.timerControl$.next();
       this.carousel.navForward(null);
+    }
+  }
+
+  colorLastQuestionIndicator(isLastQuestionCorrect: boolean) {
+    const currentQuestionNumber = this.submitedQuestion?.number;
+    if (currentQuestionNumber) {
+      ((document.querySelector(".p-carousel-indicators")?.childNodes[currentQuestionNumber - 1] as HTMLElement)
+        .children[0] as HTMLElement).style.background = isLastQuestionCorrect ? "#4BB543" : "#FC100D";
     }
   }
 }

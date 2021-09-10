@@ -1,8 +1,21 @@
-::ng-deep .p-carousel-indicators {
-  pointer-events: none;
-}
+::ng-deep {
+  .p-carousel-next,
+  .p-carousel-prev {
+    display: none !important;
+  }
+  .p-carousel-indicators {
+    pointer-events: none;
+  }
+  .p-carousel .p-carousel-indicators {
+    & > .p-carousel-indicator button {
+      background: #e3f2fd;
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+    }
 
-::ng-deep .p-carousel-next,
-::ng-deep .p-carousel-prev {
-  display: none !important;
+    & > .p-highlight {
+      border-radius: 50%;
+    }
+  }
 }

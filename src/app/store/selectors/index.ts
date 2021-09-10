@@ -1,1 +1,1 @@
-// export * from "./question.selector";
+export * from "./trivia.selector";
