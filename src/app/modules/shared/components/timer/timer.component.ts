@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { EMPTY, Observable, Subject, timer } from "rxjs";
-import { finalize, scan, startWith, switchMap, takeWhile, tap } from "rxjs/operators";
+import { finalize, scan, startWith, switchMap, takeUntil, takeWhile, tap } from "rxjs/operators";
 
 @Component({
   selector: "app-timer",
@@ -15,6 +15,7 @@ export class TimerComponent implements OnInit {
   timer$: Observable<number> = new Observable<number>();
 
   timerControl$ = new Subject<number>();
+  stopTimer$ = new Subject<void>();
 
   ngOnInit(): void {
     this.timer$ = this.timerControl$.pipe(
@@ -25,7 +26,8 @@ export class TimerComponent implements OnInit {
           tap((sec) => sec < 0 && this.timeExpired.emit()),
           takeWhile((x) => x >= 0)
         )
-      )
+      ),
+      takeUntil(this.stopTimer$)
     );
   }
 }

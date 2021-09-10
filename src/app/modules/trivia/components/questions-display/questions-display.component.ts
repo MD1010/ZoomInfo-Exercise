@@ -7,7 +7,7 @@ import { TimerComponent } from "src/app/modules/shared/components/timer/timer.co
 import * as TriviaActions from "src/app/store/actions";
 import { AppState } from "src/app/store/app-state";
 import { getAllQuestions } from "src/app/store/selectors/trivia.selector";
-import { MAX_QUESTIONS_DISPLAYED, NUM_OF_RETRIES } from "src/app/utils/consts";
+import { MAX_QUESTIONS_DISPLAYED, NUM_OF_RETRIES, TIME_PER_QUESTION } from "src/app/utils/consts";
 import { IAnswer } from "../../interfaces/answer.interface";
 import { IQuestion } from "../../interfaces/question.interface";
 
@@ -23,12 +23,13 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
   // currentQuestion$: Observable<Question | null>;
   questions$: Observable<IQuestion[] | null>;
   questionCount = 0;
-  isGameOver = false;
   selectedAnswer: IAnswer | null = null;
   currentQuestionTries = NUM_OF_RETRIES;
   submitedQuestion: IQuestion | null = null;
+  correctAnswers = 0;
   @ViewChild("carousel") carousel: Carousel;
   @ViewChild("timer") timer: TimerComponent;
+  questionTime = TIME_PER_QUESTION;
 
   ngOnInit(): void {
     // this.currentQuestion$ = this.store.select(getCurrentQuestion);
@@ -57,8 +58,8 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
 
   checkIfGameOver() {
     if (this.submitedQuestion?.number === MAX_QUESTIONS_DISPLAYED) {
-      alert("Quiz done!");
-      this.isGameOver = true;
+      alert(`Quiz done, You got ${this.correctAnswers / MAX_QUESTIONS_DISPLAYED}`);
+      this.timer.stopTimer$.next();
       return true;
     }
     return false;
@@ -78,7 +79,7 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
     }
     if (answer.isCorrect) {
       alert("You are right");
-
+      this.correctAnswers += 1;
       this.moveToNextQuestion();
     } else if (this.currentQuestionTries - 1) {
       this.currentQuestionTries -= 1;
@@ -89,7 +90,6 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
     }
   }
   moveToNextQuestion() {
-    // todo mark this question as incorrect
     // todo many questions are fetched as the number of timers each question has
     // this.store.dispatch(TriviaActions.loadNextQuestion());
     // todo check if last question display popup
