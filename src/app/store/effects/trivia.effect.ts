@@ -10,6 +10,7 @@ import { AppState } from "../app-state";
 @Injectable()
 export class TriviaEffects {
   constructor(private actions$: Actions, private triviaService: TriviaService) {}
+  // todo check if question is not in store
   loadQuestion$ = createEffect(() =>
     this.actions$.pipe(
       startWith(TriviaActions.loadNextQuestion()),

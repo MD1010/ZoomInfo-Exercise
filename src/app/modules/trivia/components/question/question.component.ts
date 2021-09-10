@@ -1,14 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  Input,
-  Output,
-  EventEmitter,
-  ViewChild,
-  HostListener,
-} from "@angular/core";
-import { Observable } from "rxjs";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { IAnswer } from "../../interfaces/answer.interface";
 import { IQuestion } from "../../interfaces/question.interface";
 

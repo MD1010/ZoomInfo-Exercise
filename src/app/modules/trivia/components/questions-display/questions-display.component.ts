@@ -58,7 +58,7 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
 
   checkIfGameOver() {
     if (this.submitedQuestion?.number === MAX_QUESTIONS_DISPLAYED) {
-      alert(`Quiz done, You got ${this.correctAnswers / MAX_QUESTIONS_DISPLAYED}`);
+      alert(`Quiz done, You have got ${this.correctAnswers}/${MAX_QUESTIONS_DISPLAYED} correct answers!`);
       this.timer.stopTimer$.next();
       return true;
     }
@@ -94,10 +94,10 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
     // this.store.dispatch(TriviaActions.loadNextQuestion());
     // todo check if last question display popup
     // todo handle timer ticking after game is done
-    if (!this.selectedAnswer) {
-      alert("You ran out of time");
-    }
-    console.log("moving to next question");
+    // if (!this.selectedAnswer) {
+    //   alert("You ran out of time");
+    // }
+    // console.log("moving to next question");
 
     if (!this.checkIfGameOver()) {
       this.timer.timerControl$.next();

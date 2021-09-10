@@ -9,6 +9,7 @@ import { IQuestion } from "../interfaces/question.interface";
 import { v4 as uuidv4 } from "uuid";
 import { AppState } from "src/app/store/app-state";
 import { Store } from "@ngrx/store";
+import shuffle from "lodash/shuffle";
 
 @Injectable({
   providedIn: "root",
@@ -20,7 +21,7 @@ export class TriviaService {
     const incorrectAnswers = apiQuestion.incorrect_answers.map((a: any) => ({ content: atob(a), isCorrect: false }));
     const correctAnswer = { content: atob(apiQuestion.correct_answer), isCorrect: true };
     return {
-      answers: [...incorrectAnswers, correctAnswer],
+      answers: shuffle([...incorrectAnswers, correctAnswer]),
       content: atob(apiQuestion.question),
       id: uuidv4(),
       number: +uniqueId(),
