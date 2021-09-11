@@ -1,4 +1,12 @@
 .question-container {
+  &__answers {
+    display: grid;
+    width: 75%;
+    // width: 200px;
+    // height: 200px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
   &__answer-btn:focus {
     border: 1px solid blue;
   }

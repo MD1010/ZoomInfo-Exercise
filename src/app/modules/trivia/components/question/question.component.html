@@ -3,7 +3,11 @@
     Q:{{question.number}} {{question.content}}
   </div>
 
-  <div *ngFor="let answer of this.question.answers" class="question-container__answers">
-    <button class="question-container__answer-btn" (click)="onSelect(answer)">{{answer.content}}</button>
+  <div class="question-container__answers">
+    <ng-container *ngFor="let answer of this.question.answers">
+      <button pButton label="Submit" pRipple (onClick)="onSelect(answer)">{{answer.content}}</button>
+    </ng-container>
+
+    <!-- <button class="question-container__answer-btn" (click)=""></button> -->
   </div>
 </div>

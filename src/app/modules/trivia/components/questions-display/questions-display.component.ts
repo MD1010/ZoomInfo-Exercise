@@ -22,31 +22,25 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
 
   questions$: Observable<IQuestion[] | null>;
   selectedAnswer: IAnswer | null = null;
-  currentQuestionTries = NUM_OF_RETRIES;
-  submitedQuestion: IQuestion | null = null;
-  correctAnswers = 0;
+  currentQuestionTries = NUM_OF_RETRIES; // todo move to store
+  correctAnswers = 0; // todo move to store
+  submitedQuestion: IQuestion | null = null; // todo current question displayed can be moved to store
   @ViewChild("carousel") carousel: Carousel;
   @ViewChild("timer") timer: TimerComponent;
   questionTime = TIME_PER_QUESTION;
 
   ngOnInit(): void {
     this.questions$ = this.store.select(getAllQuestions);
-    // this.getNextQuestion();
   }
 
   ngAfterViewInit(): void {
     this.carousel.isForwardNavDisabled = () => true;
     this.carousel.isBackwardNavDisabled = () => true;
-    this.carousel.onTransitionEnd = () => {
-      this.onQuestionDisplayed();
-    };
     this.onQuestionDisplayed();
   }
   onQuestionDisplayed() {
     this.selectedAnswer = null;
     this.currentQuestionTries = NUM_OF_RETRIES;
-    console.log(123123);
-
     this.getNextQuestion();
   }
   updateSelection(answer: IAnswer | null) {
@@ -56,12 +50,16 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
   }
 
   checkIfGameOver() {
+    console.log("CHECK IF GAME OVER");
+
     if (this.submitedQuestion?.number === MAX_QUESTIONS_DISPLAYED) {
       alert(`Quiz done, You have got ${this.correctAnswers}/${MAX_QUESTIONS_DISPLAYED} correct answers!`);
       this.timer.stopTimer$.next();
       window.close();
       return true;
     }
+    console.log("GAME NOT OVEr?", this.submitedQuestion?.number);
+
     return false;
   }
 
@@ -94,6 +92,7 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
     if (!this.checkIfGameOver()) {
       this.timer.timerControl$.next();
       this.carousel.navForward(null);
+      this.onQuestionDisplayed();
     }
   }
 

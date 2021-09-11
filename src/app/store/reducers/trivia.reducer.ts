@@ -16,7 +16,7 @@ const initialState: TriviaState = adapter.getInitialState({
 const triviaReducer = createReducer(
   initialState,
   on(TriviaActions.questionFetchSuccess, (state, { question }) => {
-    return adapter.addOne(question, { ...state, currentQuestion: question });
+    return adapter.addOne(question, state);
   }),
   on(TriviaActions.questionFetchFail, (state, { error }) => {
     return { ...state, error };
