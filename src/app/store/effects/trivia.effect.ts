@@ -2,7 +2,17 @@ import { Injectable } from "@angular/core";
 import { Actions, concatLatestFrom, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { EMPTY, of } from "rxjs";
-import { catchError, filter, map, mergeMap, startWith, switchMap, takeUntil, withLatestFrom } from "rxjs/operators";
+import {
+  catchError,
+  filter,
+  map,
+  mergeMap,
+  startWith,
+  switchMap,
+  takeUntil,
+  tap,
+  withLatestFrom,
+} from "rxjs/operators";
 import { TriviaService } from "src/app/modules/trivia/services/trivia.service";
 import { MAX_QUESTIONS_DISPLAYED } from "src/app/utils/consts";
 import * as TriviaActions from "../actions/trivia.actions";
@@ -15,7 +25,7 @@ export class TriviaEffects {
   // todo check if question is not in store
   loadQuestion$ = createEffect(() =>
     this.actions$.pipe(
-      filter((_) => MAX_QUESTIONS_DISPLAYED > 1), // do not dispatch startWith when there is only one question
+      filter((_) => MAX_QUESTIONS_DISPLAYED > 1), // do not dispatch load question when there is only one question
       startWith(TriviaActions.loadNextQuestion),
       ofType(TriviaActions.loadNextQuestion),
       withLatestFrom(this.store$.select(getFetchedQuestionsCount), this.store$.select(getAllQuestions)),

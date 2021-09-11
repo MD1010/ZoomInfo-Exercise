@@ -14,9 +14,12 @@ export class QuestionComponent implements OnInit {
   @Input() question: IQuestion;
   @Input() index: number;
   @Output() answerSelected = new EventEmitter<IAnswer | null>();
+  selectedAnswer: IAnswer;
+
   ngOnInit(): void {}
 
   onSelect(answer: IAnswer) {
+    this.selectedAnswer = answer;
     this.answerSelected.emit(answer);
   }
 

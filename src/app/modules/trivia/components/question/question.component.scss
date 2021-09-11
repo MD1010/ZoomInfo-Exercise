@@ -1,13 +1,27 @@
 .question-container {
+  &__title {
+    font-weight: bold;
+    margin-right: 1rem;
+  }
   &__answers {
     display: grid;
-    width: 75%;
+    // width: 75%;
     // width: 200px;
     // height: 200px;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
+    margin: 1rem 0;
+
+    .selected {
+      background: #1769aa !important;
+    }
+    .answer {
+      margin: 0rem 2rem 1rem 0rem;
+      padding: 0.5rem 1rem;
+    }
   }
+
   &__answer-btn:focus {
-    border: 1px solid blue;
+    border: 1px solid #1769aa;
   }
 }
