@@ -9,3 +9,5 @@ export const questionFetchSuccess = createAction(
 export const questionFetchFail = createAction("[Trivia] Load Next Question Failed", props<{ error: string }>());
 export const quizOver = createAction("[Trivia] Game is over");
 export const increaseCorrectAnswersCount = createAction("[Trivia] Correct Answer");
+export const resetNumberOfTries = createAction("[Trivia] reset number of tries");
+export const decreaseNumberOfTries = createAction("[Trivia] decrease number of tries");

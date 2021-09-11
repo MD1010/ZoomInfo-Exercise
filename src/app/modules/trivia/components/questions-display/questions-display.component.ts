@@ -2,17 +2,19 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit, ViewChild } 
 import { Store } from "@ngrx/store";
 import { Carousel } from "primeng/carousel";
 import { Observable } from "rxjs";
-import { take } from "rxjs/operators";
+import { last, take } from "rxjs/operators";
 import { TimerComponent } from "src/app/modules/shared/components/timer/timer.component";
 import * as TriviaActions from "src/app/store/actions";
+import { resetNumberOfTries } from "src/app/store/actions";
 import { AppState } from "src/app/store/app-state";
 import {
   getAllQuestions,
   getCorrectAnswersCount,
+  getCurrentQuestionTriesLeft,
   getGameState,
   getTriviaError,
 } from "src/app/store/selectors/trivia.selector";
-import { GAME_MESSAGES, MAX_QUESTIONS_DISPLAYED, NUM_OF_RETRIES, TIME_PER_QUESTION } from "src/app/utils/consts";
+import { GAME_MESSAGES, MAX_QUESTIONS_DISPLAYED, TIME_PER_QUESTION } from "src/app/utils/consts";
 import { IAnswer } from "../../interfaces/answer.interface";
 import { IQuestion } from "../../interfaces/question.interface";
 
@@ -29,20 +31,21 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
   isGameOver$: Observable<boolean>;
   numOfCorrectAnswers$: Observable<number>;
   error$: Observable<string | null>;
+  currentQuestionTriesLeft$: Observable<number>;
 
   selectedAnswer: IAnswer | null = null;
-  currentQuestionTries = NUM_OF_RETRIES; // todo move to store
   submitedQuestion: IQuestion | null = null; // todo current question displayed can be moved to store
   questionTime = TIME_PER_QUESTION;
 
   @ViewChild("carousel") carousel: Carousel;
   @ViewChild("timer") timer: TimerComponent;
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.questions$ = this.store.select(getAllQuestions);
     this.isGameOver$ = this.store.select(getGameState);
     this.numOfCorrectAnswers$ = this.store.select(getCorrectAnswersCount).pipe(take(1));
     this.error$ = this.store.select(getTriviaError);
+    this.currentQuestionTriesLeft$ = this.store.select(getCurrentQuestionTriesLeft).pipe(take(1));
   }
 
   ngAfterViewInit(): void {
@@ -52,11 +55,48 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
   }
   onQuestionDisplayed() {
     this.selectedAnswer = null;
-    this.currentQuestionTries = NUM_OF_RETRIES;
+    this.resetQuestionTries();
     this.getNextQuestion();
   }
+
+  getNextQuestion() {
+    this.store.dispatch(TriviaActions.loadNextQuestion());
+  }
+
+  handleWrongAnswer() {
+    this.store.dispatch(TriviaActions.decreaseNumberOfTries());
+    alert(GAME_MESSAGES.WRONG_ANSWER);
+  }
+
+  handleCorrectAnswer() {
+    this.colorLastQuestionIndicator(true);
+    alert(GAME_MESSAGES.CORRECT_ANSWER);
+    this.store.dispatch(TriviaActions.increaseCorrectAnswersCount());
+    this.moveToNextQuestion();
+  }
+
+  handleOutOfTries() {
+    const correctAnswer = this.submitedQuestion?.answers.find((ans) => !!ans.isCorrect)?.content;
+    alert(`${GAME_MESSAGES.FAILED_ETTEMPT} ${correctAnswer}`);
+    this.colorLastQuestionIndicator(false);
+    this.moveToNextQuestion();
+  }
+
   updateSelection(answer: IAnswer | null) {
     this.selectedAnswer = answer;
+  }
+
+  resetQuestionTries() {
+    this.store.dispatch(resetNumberOfTries());
+  }
+
+  async endQuiz() {
+    this.store.dispatch(TriviaActions.quizOver());
+    const correctAnswers = await this.numOfCorrectAnswers$.toPromise();
+    console.log(correctAnswers);
+
+    alert(`Quiz done, You have got ${correctAnswers}/${MAX_QUESTIONS_DISPLAYED} correct answers!`);
+    this.timer.stopTimer$.next();
   }
 
   checkIfGameOver() {
@@ -67,39 +107,6 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
     return false;
   }
 
-  getNextQuestion() {
-    this.store.dispatch(TriviaActions.loadNextQuestion());
-  }
-  submitAnswer(question: IQuestion) {
-    this.submitedQuestion = question; // todo get from store
-
-    const answer = this.selectedAnswer;
-    if (!answer) {
-      return;
-    }
-    if (answer.isCorrect) {
-      this.colorLastQuestionIndicator(true);
-      alert(GAME_MESSAGES.CORRECT_ANSWER);
-      this.store.dispatch(TriviaActions.increaseCorrectAnswersCount());
-      this.moveToNextQuestion();
-    } else if (this.currentQuestionTries - 1) {
-      this.currentQuestionTries -= 1;
-      alert(GAME_MESSAGES.WRONG_ANSWER);
-    } else {
-      const correctAnswer = this.submitedQuestion.answers.find((ans) => !!ans.isCorrect)?.content;
-      alert(`${GAME_MESSAGES.FAILED_ETTEMPT} ${correctAnswer}`);
-      this.colorLastQuestionIndicator(false);
-      this.moveToNextQuestion();
-    }
-  }
-  moveToNextQuestion() {
-    if (!this.checkIfGameOver()) {
-      this.timer.timerControl$.next();
-      this.carousel.navForward(null);
-      this.onQuestionDisplayed();
-    }
-  }
-
   colorLastQuestionIndicator(isLastQuestionCorrect: boolean) {
     const currentQuestionNumber = this.submitedQuestion?.number;
     if (currentQuestionNumber) {
@@ -108,12 +115,27 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async endQuiz() {
-    this.store.dispatch(TriviaActions.quizOver());
-    const correctAnswers = await this.numOfCorrectAnswers$.toPromise();
-    console.log(correctAnswers);
+  async submitAnswer(question: IQuestion) {
+    this.submitedQuestion = question;
+    const triesLeft = await this.currentQuestionTriesLeft$.toPromise();
+    const answer = this.selectedAnswer;
+    if (!answer) {
+      return;
+    }
+    if (answer.isCorrect) {
+      this.handleCorrectAnswer();
+    } else if (triesLeft - 1) {
+      this.handleWrongAnswer();
+    } else {
+      this.handleOutOfTries();
+    }
+  }
 
-    alert(`Quiz done, You have got ${correctAnswers}/${MAX_QUESTIONS_DISPLAYED} correct answers!`);
-    this.timer.stopTimer$.next();
+  moveToNextQuestion() {
+    if (!this.checkIfGameOver()) {
+      this.timer.timerControl$.next();
+      this.carousel.navForward(null);
+      this.onQuestionDisplayed();
+    }
   }
 }
