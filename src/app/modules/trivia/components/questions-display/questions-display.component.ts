@@ -50,16 +50,11 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
   }
 
   checkIfGameOver() {
-    console.log("CHECK IF GAME OVER");
-
-    if (this.submitedQuestion?.number === MAX_QUESTIONS_DISPLAYED) {
+    if (this.carousel.page === MAX_QUESTIONS_DISPLAYED - 1) {
       alert(`Quiz done, You have got ${this.correctAnswers}/${MAX_QUESTIONS_DISPLAYED} correct answers!`);
       this.timer.stopTimer$.next();
-      window.close();
       return true;
     }
-    console.log("GAME NOT OVEr?", this.submitedQuestion?.number);
-
     return false;
   }
 
