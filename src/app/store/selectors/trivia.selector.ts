@@ -18,8 +18,7 @@ export const getCorrectAnswersCount = createSelector(
 );
 export const getGameState = createSelector(triviaStateSelector, (state: TriviaState) => state.isGameOver);
 export const getTriviaError = createSelector(triviaStateSelector, (state: TriviaState) => state.error);
-export const getCurrentQuestionTriesLeft = createSelector(
-  triviaStateSelector,
-  (state: TriviaState) => state.currentQuestiontriesLeft
-);
-// export const getCurrentQuestionTriesLeft = createSelector(triviaStateSelector, (state: TriviaState) => state.);
+// export const getCurrentQuestionTriesLeft = createSelector(
+//   triviaStateSelector,
+//   (state: TriviaState) => state.currentQuestiontriesLeft
+// );

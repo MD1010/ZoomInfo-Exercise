@@ -22,7 +22,6 @@ import { getAllQuestions, getFetchedQuestionsCount } from "../selectors";
 @Injectable()
 export class TriviaEffects {
   constructor(private actions$: Actions, private triviaService: TriviaService, private store$: Store<AppState>) {}
-  // todo check if question is not in store
   loadQuestion$ = createEffect(() =>
     this.actions$.pipe(
       filter((_) => MAX_QUESTIONS_DISPLAYED > 1), // do not dispatch load question when there is only one question
@@ -31,7 +30,6 @@ export class TriviaEffects {
       withLatestFrom(this.store$.select(getFetchedQuestionsCount), this.store$.select(getAllQuestions)),
       mergeMap(([_, questionCount, questions]) => {
         if (questionCount < MAX_QUESTIONS_DISPLAYED) {
-          console.log("in merge map", questionCount);
           return this.triviaService.fetchNextQuestion().pipe(
             map((question: any) => {
               // check if the question was not displayed yet

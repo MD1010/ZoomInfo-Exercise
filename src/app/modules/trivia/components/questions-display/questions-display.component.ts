@@ -2,21 +2,19 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit, ViewChild } 
 import { Store } from "@ngrx/store";
 import { Carousel } from "primeng/carousel";
 import { Observable } from "rxjs";
-import { last, take } from "rxjs/operators";
+import { take } from "rxjs/operators";
 import { TimerComponent } from "src/app/modules/shared/components/timer/timer.component";
 import * as TriviaActions from "src/app/store/actions";
-import { resetNumberOfTries } from "src/app/store/actions";
 import { AppState } from "src/app/store/app-state";
+import { getAllQuestions, getCorrectAnswersCount, getGameState, getTriviaError } from "src/app/store/selectors";
 import {
-  getAllQuestions,
-  getCorrectAnswersCount,
-  getCurrentQuestionTriesLeft,
-  getGameState,
-  getTriviaError,
-} from "src/app/store/selectors/trivia.selector";
-import { COLORS, GAME_MESSAGES, MAX_QUESTIONS_DISPLAYED, TIME_PER_QUESTION } from "src/app/utils/consts";
-import { IAnswer } from "../../interfaces/answer.interface";
-import { IQuestion } from "../../interfaces/question.interface";
+  COLORS,
+  GAME_MESSAGES,
+  MAX_QUESTIONS_DISPLAYED,
+  NUM_OF_RETRIES,
+  TIME_PER_QUESTION,
+} from "src/app/utils/consts";
+import { IAnswer, IQuestion } from "../../interfaces";
 
 @Component({
   selector: "app-questions-display",
@@ -31,11 +29,11 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
   isGameOver$: Observable<boolean>;
   numOfCorrectAnswers$: Observable<number>;
   error$: Observable<string | null>;
-  currentQuestionTriesLeft$: Observable<number>;
 
   selectedAnswer: IAnswer | null = null;
   submitedQuestion: IQuestion | null = null;
   questionTime = TIME_PER_QUESTION;
+  currentQuestionTriesLeft: number;
 
   @ViewChild("carousel") carousel: Carousel;
   @ViewChild("timer") timer: TimerComponent;
@@ -45,7 +43,6 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
     this.isGameOver$ = this.store.select(getGameState);
     this.numOfCorrectAnswers$ = this.store.select(getCorrectAnswersCount).pipe(take(1));
     this.error$ = this.store.select(getTriviaError);
-    this.currentQuestionTriesLeft$ = this.store.select(getCurrentQuestionTriesLeft).pipe(take(1));
   }
 
   ngAfterViewInit(): void {
@@ -64,7 +61,7 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
   }
 
   handleWrongAnswer() {
-    this.store.dispatch(TriviaActions.decreaseNumberOfTries());
+    this.currentQuestionTriesLeft -= 1;
     alert(GAME_MESSAGES.WRONG_ANSWER);
   }
 
@@ -87,7 +84,7 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
   }
 
   resetQuestionTries() {
-    this.store.dispatch(resetNumberOfTries());
+    this.currentQuestionTriesLeft = NUM_OF_RETRIES;
   }
 
   async endQuiz() {
@@ -113,16 +110,15 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async submitAnswer(question: IQuestion) {
+  submitAnswer(question: IQuestion) {
     this.submitedQuestion = question;
-    const triesLeft = await this.currentQuestionTriesLeft$.toPromise();
     const answer = this.selectedAnswer;
     if (!answer) {
       return;
     }
     if (answer.isCorrect) {
       this.handleCorrectAnswer();
-    } else if (triesLeft - 1) {
+    } else if (this.currentQuestionTriesLeft - 1) {
       this.handleWrongAnswer();
     } else {
       this.handleOutOfTries();

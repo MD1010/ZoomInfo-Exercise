@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { EMPTY, Observable, Subject, timer } from "rxjs";
 import { finalize, scan, startWith, switchMap, takeUntil, takeWhile, tap } from "rxjs/operators";
 
@@ -6,6 +6,7 @@ import { finalize, scan, startWith, switchMap, takeUntil, takeWhile, tap } from 
   selector: "app-timer",
   templateUrl: "./timer.component.html",
   styleUrls: ["./timer.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimerComponent implements OnInit {
   constructor() {}

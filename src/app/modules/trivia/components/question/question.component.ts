@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { IAnswer } from "../../interfaces/answer.interface";
-import { IQuestion } from "../../interfaces/question.interface";
+import { IAnswer } from "../../interfaces";
+import { IQuestion } from "../../interfaces";
 
 @Component({
   selector: "app-question",
