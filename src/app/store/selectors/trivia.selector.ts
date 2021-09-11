@@ -12,3 +12,9 @@ export const getFetchedQuestionsCount = createSelector(
   triviaStateSelector,
   (state: TriviaState) => Object.values(state.entities).length
 );
+export const getCorrectAnswersCount = createSelector(
+  triviaStateSelector,
+  (state: TriviaState) => state.numOfCorrectAnswers
+);
+export const getGameState = createSelector(triviaStateSelector, (state: TriviaState) => state.isGameOver);
+export const getTriviaError = createSelector(triviaStateSelector, (state: TriviaState) => state.error);

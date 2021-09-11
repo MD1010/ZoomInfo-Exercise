@@ -7,3 +7,5 @@ export const questionFetchSuccess = createAction(
   props<{ question: IQuestion }>()
 );
 export const questionFetchFail = createAction("[Trivia] Load Next Question Failed", props<{ error: string }>());
+export const quizOver = createAction("[Trivia] Game is over");
+export const increaseCorrectAnswersCount = createAction("[Trivia] Correct Answer");

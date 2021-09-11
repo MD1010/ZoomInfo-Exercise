@@ -4,7 +4,7 @@
       <ng-template let-question pTemplate="item">
         <app-question [question]="question" (answerSelected)="updateSelection($event)"></app-question>
         <button
-          [disabled]="!this.selectedAnswer"
+          [disabled]="!this.selectedAnswer || (isGameOver$ | async)"
           class="submit-btn"
           pButton
           label="Submit"
@@ -22,3 +22,5 @@
     (timeExpired)="moveToNextQuestion()"
   ></app-timer>
 </div>
+
+<ng-container *ngIf="error$ | async as error">{{error}}</ng-container>

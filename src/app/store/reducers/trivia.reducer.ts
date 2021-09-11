@@ -6,12 +6,16 @@ import * as TriviaActions from "../actions/trivia.actions";
 
 export interface TriviaState extends EntityState<IQuestion> {
   error: string | null;
+  isGameOver: boolean;
+  numOfCorrectAnswers: number;
 }
 
 export const adapter: EntityAdapter<IQuestion> = createEntityAdapter<IQuestion>();
 const initialState: TriviaState = adapter.getInitialState({
   entities: [],
   error: null,
+  isGameOver: false,
+  numOfCorrectAnswers: 0,
 });
 const triviaReducer = createReducer(
   initialState,
@@ -20,6 +24,13 @@ const triviaReducer = createReducer(
   }),
   on(TriviaActions.questionFetchFail, (state, { error }) => {
     return { ...state, error };
+  }),
+  on(TriviaActions.quizOver, (state) => {
+    return { ...state, isGameOver: true };
+  }),
+  on(TriviaActions.increaseCorrectAnswersCount, (state) => {
+    const numOfCorrectAnswers = state.numOfCorrectAnswers + 1;
+    return { ...state, numOfCorrectAnswers };
   })
 );
 
