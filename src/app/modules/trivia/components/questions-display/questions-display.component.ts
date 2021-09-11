@@ -44,8 +44,6 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
     this.getNextQuestion();
   }
   updateSelection(answer: IAnswer | null) {
-    console.log(answer);
-
     this.selectedAnswer = answer;
   }
 
