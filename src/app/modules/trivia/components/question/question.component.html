@@ -5,7 +5,6 @@
 
   <div class="question-container__answers">
     <ng-container *ngFor="let answer of this.question.answers">
-      <!-- <p-button  ></p-button> -->
       <button
         class="question-container__answers__answer-btn"
         [ngClass]="{'selected': this.answer?.content == selectedAnswer?.content}"
@@ -13,7 +12,6 @@
       >
         {{answer.content}}
       </button>
-      <!-- <button class="submit-btn" pButton [label]="answer.content" pRipple (click)="onSelect(answer)"></button> -->
     </ng-container>
   </div>
 </div>
