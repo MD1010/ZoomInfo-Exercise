@@ -6,3 +6,7 @@ export enum GAME_MESSAGES {
   WRONG_ANSWER = "Please Try again",
   FAILED_ETTEMPT = "Maybe next time :( the correct answer is",
 }
+export enum COLORS {
+  SUCCESS = "#4BB543",
+  FAIL = "#FC100D",
+}

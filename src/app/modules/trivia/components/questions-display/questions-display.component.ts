@@ -14,7 +14,7 @@ import {
   getGameState,
   getTriviaError,
 } from "src/app/store/selectors/trivia.selector";
-import { GAME_MESSAGES, MAX_QUESTIONS_DISPLAYED, TIME_PER_QUESTION } from "src/app/utils/consts";
+import { COLORS, GAME_MESSAGES, MAX_QUESTIONS_DISPLAYED, TIME_PER_QUESTION } from "src/app/utils/consts";
 import { IAnswer } from "../../interfaces/answer.interface";
 import { IQuestion } from "../../interfaces/question.interface";
 
@@ -34,7 +34,7 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
   currentQuestionTriesLeft$: Observable<number>;
 
   selectedAnswer: IAnswer | null = null;
-  submitedQuestion: IQuestion | null = null; // todo current question displayed can be moved to store
+  submitedQuestion: IQuestion | null = null;
   questionTime = TIME_PER_QUESTION;
 
   @ViewChild("carousel") carousel: Carousel;
@@ -93,8 +93,6 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
   async endQuiz() {
     this.store.dispatch(TriviaActions.quizOver());
     const correctAnswers = await this.numOfCorrectAnswers$.toPromise();
-    console.log(correctAnswers);
-
     alert(`Quiz done, You have got ${correctAnswers}/${MAX_QUESTIONS_DISPLAYED} correct answers!`);
     this.timer.stopTimer$.next();
   }
@@ -111,7 +109,7 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
     const currentQuestionNumber = this.submitedQuestion?.number;
     if (currentQuestionNumber) {
       ((document.querySelector(".p-carousel-indicators")?.childNodes[currentQuestionNumber - 1] as HTMLElement)
-        .children[0] as HTMLElement).style.background = isLastQuestionCorrect ? "#4BB543" : "#FC100D";
+        .children[0] as HTMLElement).style.background = isLastQuestionCorrect ? COLORS.SUCCESS : COLORS.FAIL;
     }
   }
 
