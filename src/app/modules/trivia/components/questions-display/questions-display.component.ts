@@ -37,6 +37,11 @@ export class QuestionsDisplayComponent implements OnInit, AfterViewInit {
     this.carousel.isForwardNavDisabled = () => true;
     this.carousel.isBackwardNavDisabled = () => true;
     this.onQuestionDisplayed();
+    // this.carousel.onTransitionEnd = () => {
+    //   console.log(123);
+
+    //   this.onQuestionDisplayed();
+    // };
   }
   onQuestionDisplayed() {
     this.selectedAnswer = null;

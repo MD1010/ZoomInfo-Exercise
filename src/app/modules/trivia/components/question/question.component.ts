@@ -22,9 +22,4 @@ export class QuestionComponent implements OnInit {
     this.selectedAnswer = answer;
     this.answerSelected.emit(answer);
   }
-
-  // @HostListener("document:click", ["$event"])
-  // resetSelection() {
-  //   this.answerSelected.emit(null);
-  // }
 }
